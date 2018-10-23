@@ -4,22 +4,22 @@ description: 'Better Ethereum contract abstraction, for Node and the browser.'
 
 # truffle-contract
 
-#### Install
+**安装**
 
 ```text
 $ npm install truffle-contract
 ```
 
-#### Features
+**特征**
 
-* Synchronized transactions for better control flow \(i.e., transactions won't finish until you're guaranteed they've been mined\).
-* Promises. No more callback hell. Works well with `ES6` and `async/await`.
-* Default values for transactions, like `from` address or `gas`.
-* Returning logs, transaction receipt and transaction hash of every synchronized transaction.
+* 同步交易可以实现更好的控制流程（即，在您确保已经开采之前，交易将无法完成）。
+* 承诺。没有更多的回调。适用于`ES6`和`async/await`。
+* 交易的默认值，如`from`地址或`gas`。
+* 返回每个同步事务的日志，事务接收和事务哈希。
 
-#### Usage
+**用法**
 
-First, set up a new web3 provider instance and initialize your contract, then `require("truffle-contract")`. The input to the `contract` function is a JSON blob defined by [truffle-contract-schema](https://github.com/trufflesuite/truffle-contract-schema). This JSON blob is structured in a way that can be passed to all truffle-related projects.
+首先，设置一个新的web3提供程序实例并初始化您的合约`require("truffle-contract")`。该`contract`函数的输入是由[truffle-contract-schema](https://github.com/trufflesuite/truffle-contract-schema)定义的JSON blob 。此JSON blob的结构可以传递给所有与truffle相关的项目。
 
 ```text
 var provider = new Web3.providers.HttpProvider("http://localhost:8545");
@@ -34,13 +34,13 @@ var MyContract = contract({
 MyContract.setProvider(provider);
 ```
 
-You now have access to the following functions on `MyContract`, as well as many others:
+您现在可以访问以下`MyContract`许多功能，以及许多其他功能：
 
-* `at()`: Create an instance of `MyContract` that represents your contract at a specific address.
-* `deployed()`: Create an instance of `MyContract` that represents the default address managed by `MyContract`.
-* `new()`: Deploy a new version of this contract to the network, getting an instance of `MyContract` that represents the newly deployed instance.
+* `at()`：创建一个`MyContract`代表您在特定地址的合约的实例。
+* `deployed()`：创建一个实例`MyContract`，表示由其管理的默认地址`MyContract`。
+* `new()`：将此合同的新版本部署到网络，获取其中的实例`MyContract`表示新部署的实例。
 
-Each instance is tied to a specific address on the Ethereum network, and each instance has a 1-to-1 mapping from Javascript functions to contract functions. For instance, if your Solidity contract had a function defined `someFunction(uint value) {}`\(solidity\), then you could execute that function on the network like so:
+每个实例都绑定到以太坊网络上的特定地址，每个实例都具有从Javascript函数到契约函数的1对1映射。例如，如果您的Solidity合约定义了一个函数`someFunction(uint value) {}`（solidity），那么您可以在网络上执行该函数，如下所示：
 
 ```text
 var deployed;
@@ -52,26 +52,26 @@ MyContract.deployed().then(function(instance) {
 });
 ```
 
-#### Browser Usage
+**浏览器用法**
 
-In your `head` element, include Web3 and then include truffle-contract:
+在您的`head`元素中，包括Web3，然后包含松露合同：
 
 ```text
 <script type="text/javascript" src="./path/to/web3.min.js"></script>
 <script type="text/javascript" src="./dist/truffle-contract.min.js"></script>
 ```
 
-Alternatively, you can use the non-minified versions for easier debugging.
+或者，您可以使用非缩小版本以便于调试。
 
-With this usage, `truffle-contract` will be available via the `TruffleContract` object:
+有了这种用法，`truffle-contract`将通过`TruffleContract`对象提供：
 
 ```text
 var MyContract = TruffleContract(...);
 ```
 
-#### Full Example
+**完整的例子**
 
-Let's use `truffle-contract` with an example contract from [Dapps For Beginners](https://dappsforbeginners.wordpress.com/tutorials/your-first-dapp/). In this case, the abstraction has been saved to a `.sol.js` file by [truffle-artifactor](https://github.com/trufflesuite/truffle-artifactor):
+让我们使用[Dapps For Beginners](https://dappsforbeginners.wordpress.com/tutorials/your-first-dapp/)`truffle-contract`的示例合同。在这种情况下，抽象已被[truffle-artifactor](https://github.com/trufflesuite/truffle-artifactor)保存到文件中：`.sol.js`
 
 ```text
 // Require the package that was previosly saved by truffle-artifactor
@@ -121,61 +121,61 @@ MetaCoin.at(contract_address).then(function(instance) {
 });
 ```
 
-## API
+### API
 
-There are two API's you'll need to be aware of. One is the static Contract Abstraction API and the other is the Contract Instance API. The Abstraction API is a set of functions that exist for all contract abstractions, and those function exist on the abstraction itself \(i.e., `MyContract.at()`\). In contrast, the Instance API is the API available to contract instances -- i.e., abstractions that represent a specific contract on the network -- and that API is created dynamically based on functions available in your Solidity source file.
+您需要注意两个API。一个是静态合同抽象API，另一个是合同实例API。Abstraction API是一组存在于所有合同抽象中的函数，这些函数存在于抽象本身（即`MyContract.at()`）。相反，Instance API是可用于合同实例的API - 即表示网络上特定合同的抽象 - 并且API是根据Solidity源文件中可用的函数动态创建的。
 
-#### Contract Abstraction API
+**合同抽象API**
 
-Each contract abstraction -- `MyContract` in the examples above -- have the following useful functions:
+每个合同抽象 - `MyContract`在上面的例子中 - 都有以下有用的功能：
 
-**MyContract.new\(\[arg1, arg2, ...\], \[tx params\]\)**
+**MyContract.new（\[arg1，arg2，...\]，\[tx params\]）**
 
-This function take whatever contructor parameters your contract requires and deploys a new instance of the contract to the network. There's an optional last argument which you can use to pass transaction parameters including the transaction from address, gas limit and gas price. This function returns a Promise that resolves into a new instance of the contract abstraction at the newly deployed address.
+此函数采用您的契约所需的任何构造函数参数，并将合同的新实例部署到网络。有一个可选的最后一个参数，您可以使用它来传递交易参数，包括来自地址，天然气限制和天然气价格的交易。此函数返回一个Promise，它在新部署的地址处解析为合同抽象的新实例。
 
-**MyContract.at\(address\)**
+**MyContract.at（地址）**
 
-This function creates a new instance of the contract abstraction representing the contract at the passed in address. Returns a "thenable" object \(not yet an actual Promise for backward compatibility\). Resolves to a contract abstraction instance after ensuring code exists at the specified address.
+此函数创建一个新的合同抽象实例，表示传入地址中的合同。返回一个“可以”的对象（为了向后兼容，还不是一个实际的Promise）。在确保代码存在于指定地址后，解析为合同抽象实例。
 
-**MyContract.deployed\(\)**
+**MyContract.deployed（）**
 
-Creates an instance of the contract abstraction representing the contract at its deployed address. The deployed address is a special value given to truffle-contract that, when set, saves the address internally so that the deployed address can be inferred from the given Ethereum network being used. This allows you to write code referring to a specific deployed contract without having to manage those addresses yourself. Like `at()`, `deployed()` is thenable, and will resolve to a contract abstraction instance representing the deployed contract after ensuring that code exists at that location and that that address exists on the network being used.
+在其部署的地址创建表示合同的合同抽象实例。部署的地址是给予松露合同的特殊值，当设置时，在内部保存地址，以便可以从所使用的给定以太网网络推断部署的地址。这允许您编写引用特定已部署合同的代码，而无需自己管理这些地址。就像`at()`，`deployed()`可以，并且在确保代码存在于该位置并且该地址存在于正在使用的网络上之后，将解析为表示已部署合同的合同抽象实例。
 
-**MyContract.link\(instance\)**
+**MyContract.link（实例）**
 
-Link a library represented by a contract abstraction instance to MyContract. The library must first be deployed and have its deployed address set. The name and deployed address will be inferred from the contract abstraction instance. When this form of `MyContract.link()` is used, MyContract will consume all of the linked library's events and will be able to report that those events occurred during the result of a transaction.
+将合同抽象实例表示的库链接到MyContract。必须首先部署库并设置其已部署的地址。名称和部署地址将从合同抽象实例中推断出来。使用此形式时`MyContract.link()`，MyContract将使用所有链接库的事件，并且能够报告在事务结果期间发生的那些事件。
 
-Libraries can be linked multiple times and will overwrite their previous linkage.
+库可以多次链接，并覆盖以前的链接。
 
-Note: This method has two other forms, but this form is recommended.
+注意：此方法有两种其他形式，但建议使用此表单。
 
-**MyContract.link\(name, address\)**
+**MyContract.link（姓名，地址）**
 
-Link a library with a specific name and address to MyContract. The library's events will not be consumed using this form.
+将具有特定名称和地址的库链接到MyContract。使用此表单不会使用库的事件。
 
-**MyContract.link\(object\)**
+**MyContract.link（对象）**
 
-Link multiple libraries denoted by an Object to MyContract. The keys must be strings representing the library names and the values must be strings representing the addresses. Like above, libraries' events will not be consumed using this form.
+将Object表示的多个库链接到MyContract。键必须是表示库名称的字符串，值必须是表示地址的字符串。如上所述，使用此表单不会消耗库的事件。
 
-**MyContract.networks\(\)**
+**MyContract.networks（）**
 
-View a list of network ids this contract abstraction has been set up to represent.
+查看此合同抽象已设置为表示的网络ID列表。
 
-**MyContract.setProvider\(provider\)**
+**MyContract.setProvider（供应商）**
 
-Sets the web3 provider this contract abstraction will use to make transactions.
+设置此合约抽象将用于进行事务的web3提供程序。
 
-**MyContract.setNetwork\(network\_id\)**
+**MyContract.setNetwork（NETWORK\_ID）**
 
-Sets the network that MyContract is currently representing.
+设置MyContract当前表示的网络。
 
-**MyContract.hasNetwork\(network\_id\)**
+**MyContract.hasNetwork（NETWORK\_ID）**
 
-Returns a boolean denoting whether or not this contract abstraction is set up to represent a specific network.
+返回一个布尔值，表示此合约抽象是否设置为表示特定网络。
 
-**MyContract.defaults\(\[new\_defaults\]\)**
+**MyContract.defaults（\[new\_defaults\]）**
 
-Get's and optionally sets transaction defaults for all instances created from this abstraction. If called without any parameters it will simply return an Object representing current defaults. If an Object is passed, this will set new defaults. Example default transaction values that can be set are:
+获取并选择为从此抽象创建的所有实例设置事务默认值。如果在没有任何参数的情况下调用它，它将只返回表示当前默认值的Object。如果传递了一个Object，则会设置新的默认值。可以设置的默认事务值示例如下：
 
 ```text
 MyContract.defaults({
@@ -186,19 +186,19 @@ MyContract.defaults({
 })
 ```
 
-Setting a default `from` address, for instance, is useful when you have a contract abstraction you intend to represent one user \(i.e., one address\).
+`from`例如，当您有一个合同抽象来表示一个用户（即一个地址）时，设置一个默认地址很有用。
 
-**MyContract.clone\(network\_id\)**
+**MyContract.clone（NETWORK\_ID）**
 
-Clone a contract abstraction to get another object that manages the same contract artifacts, but using a different `network_id`. This is useful if you'd like to manage the same contract but on a different network. When using this function, don't forget to set the correct provider afterward.
+克隆合同抽象以获取管理相同合同工件的另一个对象，但使用不同的`network_id`。如果您想在不同的网络上管理相同的合同，这非常有用。使用此功能时，请不要忘记以后设置正确的提供程序。
 
 ```text
 var MyOtherContract = MyContract.clone(1337);
 ```
 
-#### Contract Instance API
+**合同实例API**
 
-Each contract instance is different based on the source Solidity contract, and the API is created dynamically. For the purposes of this documentation, let's use the following Solidity source code below:
+每个合同实例根据源Solidity合同而不同，并且API是动态创建的。出于本文档的目的，让我们使用以下Solidity源代码：
 
 ```text
 contract MyContract {
@@ -214,11 +214,11 @@ contract MyContract {
 }
 ```
 
-From Javascript's point of view, this contract has three functions: `setValue`, `getValue` and `value`. This is because `value` is public and automatically creates a getter function for it.
+从JavaScript的角度来看，本合同具有三个功能：`setValue`，`getValue`和`value`。这是因为`value`是公共的并自动为它创建一个getter函数。
 
-**Making a transaction via a contract function**
+**通过合同功能进行交易**
 
-When we call `setValue()`, this creates a transaction. From Javascript:
+当我们打电话时`setValue()`，这会创建一个交易。来自Javascript：
 
 ```text
 instance.setValue(5).then(function(result) {
@@ -227,7 +227,7 @@ instance.setValue(5).then(function(result) {
 });
 ```
 
-The result object that gets returned looks like this:
+返回的结果对象如下所示：
 
 ```text
 {
@@ -254,21 +254,21 @@ The result object that gets returned looks like this:
 }
 ```
 
-Note that if the function being executed in the transaction has a return value, you will not get that return value inside this result. You must instead use an event \(like `ValueSet`\) and look up the result in the `logs` array.
+请注意，如果事务中正在执行的函数具有返回值，则不会在此结果中获得该返回值。您必须改为使用事件（例如`ValueSet`）并在`logs`数组中查找结果。
 
-**Explicitly making a call instead of a transaction**
+**明确地拨打电话而不是交易**
 
-We can call `setValue()` without creating a transaction by explicitly using `.call`:
+我们可以`setValue()`通过显式使用`.call`以下方式调用而不创建事务
 
 ```text
 instance.setValue.call(5).then(...);
 ```
 
-This isn't very useful in this case, since `setValue()` sets things, and the value we pass won't be saved since we're not creating a transaction.
+这在这种情况下不是很有用，因为`setValue()`设置了东西，我们传递的值将不会保存，因为我们没有创建事务。
 
-**Calling getters**
+**呼唤吸气剂**
 
-However, we can _get_ the value using `getValue()`, using `.call()`. Calls are always free and don't cost any Ether, so they're good for calling functions that read data off the blockchain:
+但是，我们可以使用，_获取_值。呼叫始终是免费的，不需要任何以太网，因此它们适用于调用从区块链读取数据的函数：`getValue().call()`
 
 ```text
 instance.getValue.call().then(function(val) {
@@ -277,7 +277,7 @@ instance.getValue.call().then(function(val) {
 });
 ```
 
-Even more helpful, however is we _don't even need_ to use `.call` when a function is marked as `constant`, because `truffle-contract` will automatically know that that function can only be interacted with via a call:
+更有帮助的是，我们_甚至不需要_`.call`在函数被标记为时使用`constant`，因为它`truffle-contract`会自动知道该函数只能通过调用进行交互：
 
 ```text
 instance.getValue().then(function(val) {
@@ -286,9 +286,9 @@ instance.getValue().then(function(val) {
 });
 ```
 
-**Processing transaction results**
+**处理交易结果**
 
-When you make a transaction, you're given a `result` object that gives you a wealth of information about the transaction. You're given the transaction has \(`result.tx`\), the decoded events \(also known as logs; `result.logs`\), and a transaction receipt \(`result.receipt`\). In the below example, you'll recieve the `ValueSet()` event because you triggered the event using the `setValue()` function:
+当您进行交易时，您将获得一个`result`对象，该对象为您提供有关交易的大量信息。您将获得事务has（`result.tx`），已解码事件（也称为日志; `result.logs`）和事务收据（`result.receipt`）。在下面的示例中，您将收到`ValueSet()`事件，因为您使用以下`setValue()`函数触发了事件：
 
 ```text
 instance.setValue(5).then(function(result) {
@@ -298,9 +298,9 @@ instance.setValue(5).then(function(result) {
 });
 ```
 
-**Sending Ether / Triggering the fallback function**
+**发送以太/触发回退功能**
 
-You can trigger the fallback function by sending a transaction to this function:
+您可以通过向此函数发送事务来触发回退功能：
 
 ```text
 instance.sendTransaction({...}).then(function(result) {
@@ -308,9 +308,9 @@ instance.sendTransaction({...}).then(function(result) {
 });
 ```
 
-This is promisified like all available contract instance functions, and has the same API as `web3.eth.sendTransaction` without the callback. The `to` value will be automatically filled in for you.
+这与所有可用的合同实例函数一样被默认，并且具有与`web3.eth.sendTransaction`没有回调的API相同的API 。该`to`值将自动填写给您。
 
-If you only want to send Ether to the contract a shorthand is available:
+如果您只想将以太币发送给合同，可以使用速记：
 
 ```text
 instance.send(web3.toWei(1, "ether")).then(function(result) {
@@ -318,9 +318,9 @@ instance.send(web3.toWei(1, "ether")).then(function(result) {
 });
 ```
 
-**Estimating gas usage**
+**估算天然气的使用量**
 
-Run this function to estimate the gas usage:
+运行此功能以估算燃气使用情况：
 
 ```text
 instance.setValue.estimateGas(5).then(function(result) {
@@ -328,7 +328,7 @@ instance.setValue.estimateGas(5).then(function(result) {
 });
 ```
 
-## Testing
+### 测试
 
-This package is the result of breaking up EtherPudding into multiple modules. Tests currently reside within [truffle-artifactor](https://github.com/trufflesuite/truffle-artifactor) but will soon move here.
+该软件包是将EtherPudding分解为多个模块的结果。测试目前存在于[松露神器内，](https://github.com/trufflesuite/truffle-artifactor)但很快就会移到这里。
 
