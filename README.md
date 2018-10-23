@@ -4,10 +4,6 @@ description: 'Better Ethereum contract abstraction, for Node and the browser.'
 
 # truffle-contract
 
-## 
-
-Better Ethereum contract abstraction, for Node and the browser.
-
 #### Install
 
 ```text
